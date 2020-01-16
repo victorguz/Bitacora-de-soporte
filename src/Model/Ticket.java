@@ -34,7 +34,7 @@ public class Ticket {
      * Cuando se resuelve el ticket se muestra este dato
      */
     private String observacion;
-    private Responsable responsable;
+    private Usuario responsable;
     private String estado;
     /**
      * Cuando un ticket es modificado se le asigna un nuevo ticketkey y
@@ -196,11 +196,11 @@ public class Ticket {
         this.horaFin = horaFin;
     }
 
-    public Responsable getResponsable() {
+    public Usuario getResponsable() {
         return responsable;
     }
 
-    public void setResponsable(Responsable responsable) {
+    public void setResponsable(Usuario responsable) {
         this.responsable = responsable;
     }
     

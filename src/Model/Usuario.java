@@ -9,24 +9,24 @@ package Model;
  *
  * @author Licmora
  */
-public class Responsable {
-    private int responsablekey;
+public class Usuario {
+    private int usuariokey; 
     private String username;
     private String password;
     private String nombre;
     /**
      * Los roles definen que se puede hacer en la app:
-     * -Responsable bitacora: Tiene total control de la app, puede gestionar usuarios y tickets.
-     * -Responsable de ticket: Tiene control sobre sus propios tickets, de posponerlos 
+ -Usuario bitacora: Tiene total control de la app, puede gestionar usuarios y tickets.
+     * -Usuario de ticket: Tiene control sobre sus propios tickets, de posponerlos 
      */
     private String rol;
 
     public int getResponsablekey() {
-        return responsablekey;
+        return usuariokey;
     }
 
     public void setResponsablekey(int responsablekey) {
-        this.responsablekey = responsablekey;
+        this.usuariokey = responsablekey;
     }
 
     public String getUsername() {

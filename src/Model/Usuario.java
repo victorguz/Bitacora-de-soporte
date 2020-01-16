@@ -10,14 +10,16 @@ package Model;
  * @author Licmora
  */
 public class Usuario {
-    private int usuariokey; 
+
+    private int usuariokey;
     private String username;
     private String password;
     private String nombre;
     /**
-     * Los roles definen que se puede hacer en la app:
- -Usuario bitacora: Tiene total control de la app, puede gestionar usuarios y tickets.
-     * -Usuario de ticket: Tiene control sobre sus propios tickets, de posponerlos 
+     * Los roles definen que se puede hacer en la app: -Usuario bitacora: Tiene
+     * total control de la app, puede gestionar usuarios y tickets. -Usuario de
+     * ticket: Tiene control sobre sus propios tickets y de posponerlos, lo cual
+     * se avisa de inmediato al responsable de bitacora.
      */
     private String rol;
 
@@ -60,5 +62,5 @@ public class Usuario {
     public void setRol(String rol) {
         this.rol = rol;
     }
-    
+
 }

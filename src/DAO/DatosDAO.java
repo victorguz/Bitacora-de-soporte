@@ -6,8 +6,6 @@
 package DAO;
 
 import Model.Dato;
-import Model.Dato;
-import Model.Dato;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -28,7 +26,7 @@ public class DatosDAO implements CRUD<Dato, Integer> {
     Connection conex;
 
     final String INSERT = "INSERT INTO DatoS (nombre, dato, usedate, usetime)"
-            + "VALUES (?, ?, ?, ?, ?)";
+            + "VALUES (?, ?, ?, ?)";
     final String ALL = "SELECT Datokey,nombre, dato "
             +" FROM DatoS order by usetime desc, usedate desc";
     final String LIKE = "SELECT Datokey,nombre, dato "
@@ -43,7 +41,7 @@ public class DatosDAO implements CRUD<Dato, Integer> {
     }
     
     @Override
-    public void insert(Dato a) {
+    public void insert(Dato a) throws DAOException {
         PreparedStatement s = null;
         try {
             s = conex.prepareStatement(INSERT);
@@ -55,20 +53,20 @@ public class DatosDAO implements CRUD<Dato, Integer> {
                 throw new SQLException("Error al insertar Dato");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
     }
 
     @Override
-    public void update(Dato a) {
+    public void update(Dato a) throws DAOException {
         PreparedStatement s = null;
         try {
             s = conex.prepareStatement(UPDATE);
@@ -81,20 +79,20 @@ public class DatosDAO implements CRUD<Dato, Integer> {
                 throw new SQLException("Error al insertar Dato");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
     }
 
     @Override
-    public void desactivate(Dato a) {
+    public void desactivate(Dato a) throws DAOException {
         PreparedStatement s = null;
         try {
             s = conex.prepareStatement(DESACTIVATE);
@@ -104,20 +102,20 @@ public class DatosDAO implements CRUD<Dato, Integer> {
                 throw new SQLException("Error al insertar Dato");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
     }
 
     @Override
-    public Dato select(Integer dato) {
+    public Dato select(Integer dato) throws DAOException {
         PreparedStatement s = null;
         ResultSet rs = null;
         Dato c = null;
@@ -131,20 +129,20 @@ public class DatosDAO implements CRUD<Dato, Integer> {
                 throw new SQLException("Dato no encontrado");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
@@ -152,7 +150,7 @@ public class DatosDAO implements CRUD<Dato, Integer> {
     }
 
     @Override
-    public ObservableList<Dato> all() {
+    public ObservableList<Dato> all() throws DAOException {
         PreparedStatement s = null;
         ResultSet rs = null;
         ObservableList<Dato> Datos = FXCollections.observableArrayList();
@@ -163,20 +161,20 @@ public class DatosDAO implements CRUD<Dato, Integer> {
                 Datos.add(convertir(rs));
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
@@ -184,7 +182,7 @@ public class DatosDAO implements CRUD<Dato, Integer> {
     }
 
     @Override
-    public ObservableList<Dato> like(String dato) {
+    public ObservableList<Dato> like(String dato) throws DAOException {
         PreparedStatement s = null;
         ResultSet rs = null;
         ObservableList<Dato> l = FXCollections.observableArrayList();
@@ -196,20 +194,20 @@ public class DatosDAO implements CRUD<Dato, Integer> {
                 l.add(convertir(rs));
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
@@ -217,7 +215,7 @@ public class DatosDAO implements CRUD<Dato, Integer> {
     }
 
     @Override
-    public Dato convertir(ResultSet rs) {
+    public Dato convertir(ResultSet rs) throws DAOException {
         try {
             Dato c = new Dato();
             c.setDatokey(rs.getInt("Datokey"));
@@ -225,9 +223,8 @@ public class DatosDAO implements CRUD<Dato, Integer> {
             c.setDato(rs.getString("dato"));
             return c;
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         }
-        return null;
     }
 
 }

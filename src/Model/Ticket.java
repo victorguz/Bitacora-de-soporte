@@ -27,7 +27,7 @@ public class Ticket {
     private String incidente;
     private String detalles;
     private String observacion;
-    private Usuario responsable;
+    private String responsable;
     private String estado;
     private String clasificacion;//Software o hardware
     private LocalDate fechaSolicitud;
@@ -143,11 +143,11 @@ public class Ticket {
         this.horaFin = horaFin;
     }
 
-    public Usuario getResponsable() {
+    public String getResponsable() {
         return responsable;
     }
 
-    public void setResponsable(Usuario responsable) {
+    public void setResponsable(String responsable) {
         this.responsable = responsable;
     }
 

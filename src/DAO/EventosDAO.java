@@ -26,38 +26,37 @@ public class EventosDAO implements CRUD<Evento, Integer> {
 
     Connection conex;
 
-    final String INSERT = "INSERT INTO EventoS (nombre,descripcion,ticketkey,Eventokey,fecha,hora)"
+    final String INSERT = "INSERT INTO EventoS (nombre,descripcion,ticketkey,fecha,hora)"
             + "VALUES (?, ?, ?, ?, ?, ?)";
-    final String ALL = "SELECT eventokey,nombre,descripcion,ticketkey,usuariokey,fecha,hora FROM EVENTOS";
-    final String LIKE = "SELECT eventokey,nombre,descripcion,ticketkey,usuariokey,fecha,hora FROM EVENTOS order by nombre like %?%";
-    final String ONE = "SELECT eventokey,nombre,descripcion,ticketkey,usuariokey,fecha,hora FROM EVENTOS where eventokey = ?";
+    final String ALL = "SELECT eventokey,nombre,descripcion,ticketkey,fecha,hora FROM EVENTOS";
+    final String LIKE = "SELECT eventokey,nombre,descripcion,ticketkey,fecha,hora FROM EVENTOS order by nombre like %?%";
+    final String ONE = "SELECT eventokey,nombre,descripcion,ticketkey,fecha,hora FROM EVENTOS where eventokey = ?";
 
     public EventosDAO(Connection conex) {
         this.conex = conex;
     }
 
     @Override
-    public void insert(Evento a) {
+    public void insert(Evento a) throws DAOException {
         PreparedStatement s = null;
         try {
             s = conex.prepareStatement(INSERT);
             s.setString(1, a.getNombre());
             s.setString(2, a.getDescripcion());
             s.setInt(3, a.getTicket().getTicketkey());
-            s.setInt(4, a.getUsuario().getUsuariokey());
-            s.setDate(5, Date.valueOf(LocalDate.now()));
-            s.setTime(6, Time.valueOf(LocalTime.now()));
+            s.setDate(4, Date.valueOf(LocalDate.now()));
+            s.setTime(5, Time.valueOf(LocalTime.now()));
             if (s.executeUpdate() == 0) {
                 throw new SQLException("Error al insertar Evento");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
@@ -72,7 +71,7 @@ public class EventosDAO implements CRUD<Evento, Integer> {
     }
 
     @Override
-    public Evento select(Integer dato) {
+    public Evento select(Integer dato) throws DAOException {
         PreparedStatement s = null;
         ResultSet rs = null;
         Evento c = null;
@@ -86,20 +85,20 @@ public class EventosDAO implements CRUD<Evento, Integer> {
                 throw new SQLException("Evento no encontrado");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
@@ -107,7 +106,7 @@ public class EventosDAO implements CRUD<Evento, Integer> {
     }
 
     @Override
-    public ObservableList<Evento> all() {
+    public ObservableList<Evento> all() throws DAOException {
         PreparedStatement s = null;
         ResultSet rs = null;
         ObservableList<Evento> Eventos = FXCollections.observableArrayList();
@@ -118,20 +117,20 @@ public class EventosDAO implements CRUD<Evento, Integer> {
                 Eventos.add(convertir(rs));
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
@@ -139,7 +138,7 @@ public class EventosDAO implements CRUD<Evento, Integer> {
     }
 
     @Override
-    public ObservableList<Evento> like(String dato) {
+    public ObservableList<Evento> like(String dato) throws DAOException {
         PreparedStatement s = null;
         ResultSet rs = null;
         ObservableList<Evento> l = FXCollections.observableArrayList();
@@ -151,20 +150,20 @@ public class EventosDAO implements CRUD<Evento, Integer> {
                 l.add(convertir(rs));
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
@@ -172,20 +171,18 @@ public class EventosDAO implements CRUD<Evento, Integer> {
     }
 
     @Override
-    public Evento convertir(ResultSet rs) {
+    public Evento convertir(ResultSet rs) throws DAOException {
         try {
             Evento c = new Evento();
             c.setEventokey(rs.getInt("Eventokey"));
             c.setNombre(rs.getString("nombre"));
             c.setDescripcion(rs.getString("descripcion"));
             c.setTicket(Controller.getTickets().select(rs.getInt("ticketkey")));
-            c.setUsuario(Controller.getUsuarios().select(rs.getInt("usuariokey")));
             c.setFecha(rs.getDate("fecha").toLocalDate());
             c.setHora(rs.getTime("hora").toLocalTime());
             return c;
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         }
-        return null;
     }
 }

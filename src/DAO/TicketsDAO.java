@@ -5,8 +5,6 @@
  */
 package DAO;
 
-import Control.Controller;
-import Model.Ticket;
 import Model.Ticket;
 import java.sql.Connection;
 import java.sql.Date;
@@ -14,8 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -28,28 +26,28 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
     Connection conex;
 
     final String INSERT = "INSERT INTO TicketS (tipo, empresa, area, solicitante, "
-            + "medio, incidente, detalles, observacion, responsablekey, "
+            + "medio, incidente, detalles, observacion, responsable, "
             + "estado, clasificacion, fechaSolicitud, horaSolicitud, "
             + "fechaAproximada, horaAproximada, fechaInicio, horaInicio, "
             + "fechaFin, horaFin)"
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     final String ALL = "SELECT ticketkey, tipo, empresa, area, solicitante, "
-            + "medio, incidente, detalles, observacion, responsablekey, "
+            + "medio, incidente, detalles, observacion, responsable, "
             + "estado, clasificacion, fechaSolicitud, horaSolicitud, "
             + "fechaAproximada, horaAproximada, fechaInicio, horaInicio, "
             + "fechaFin, horaFin FROM TICKETS limit 100";
     final String LIKE = "SELECT ticketkey, tipo, empresa, area, solicitante, "
-            + "medio, incidente, detalles, observacion, responsablekey, "
+            + "medio, incidente, detalles, observacion, responsable, "
             + "estado, clasificacion, fechaSolicitud, horaSolicitud, "
             + "fechaAproximada, horaAproximada, fechaInicio, horaInicio, "
             + "fechaFin, horaFin FROM TICKETS order by tipo like %?% limit 50";
     final String ONE = "SELECT ticketkey, tipo, empresa, area, solicitante, "
-            + "medio, incidente, detalles, observacion, responsablekey, "
+            + "medio, incidente, detalles, observacion, responsable, "
             + "estado, clasificacion, fechaSolicitud, horaSolicitud, "
             + "fechaAproximada, horaAproximada, fechaInicio, horaInicio, "
             + "fechaFin, horaFin FROM TICKETS ticketkey = ?";
     final String UPDATE = "UPDATE TicketS SET tipo = ?, empresa = ?, area = ?, solicitante = ?, "
-            + "medio = ?, incidente = ?, detalles = ?, observacion = ?, responsablekey = ?, "
+            + "medio = ?, incidente = ?, detalles = ?, observacion = ?, responsable = ?, "
             + "estado = ?, clasificacion = ?, fechaSolicitud = ?, horaSolicitud = ?, "
             + "fechaAproximada = ?, horaAproximada = ?, fechaInicio = ?, horaInicio = ?, "
             + "fechaFin = ?, horaFin = ? WHERE Ticketkey = ?";
@@ -60,7 +58,7 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
     }
 
     @Override
-    public void insert(Ticket a) {
+    public void insert(Ticket a) throws DAOException {
         PreparedStatement s = null;
         try {
             s = conex.prepareStatement(INSERT);
@@ -72,7 +70,7 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
             s.setString(6, a.getIncidente());
             s.setString(7, a.getDetalles());
             s.setString(8, a.getObservacion());
-            s.setInt(9, a.getResponsable().getUsuariokey());
+            s.setString(9, a.getResponsable());
             s.setString(10, a.getEstado());
             s.setString(11, a.getClasificacion());
             s.setDate(12, Date.valueOf(a.getFechaSolicitud()));
@@ -87,20 +85,20 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
                 throw new SQLException("Error al insertar Ticket");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
     }
 
     @Override
-    public void update(Ticket a) {
+    public void update(Ticket a) throws DAOException {
         PreparedStatement s = null;
         try {
             s = conex.prepareStatement(UPDATE);
@@ -112,7 +110,7 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
             s.setString(6, a.getIncidente());
             s.setString(7, a.getDetalles());
             s.setString(8, a.getObservacion());
-            s.setInt(9, a.getResponsable().getUsuariokey());
+            s.setString(9, a.getResponsable());
             s.setString(10, a.getEstado());
             s.setString(11, a.getClasificacion());
             s.setDate(12, Date.valueOf(a.getFechaSolicitud()));
@@ -128,20 +126,20 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
                 throw new SQLException("Error al insertar Ticket");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
     }
 
     @Override
-    public void desactivate(Ticket a) {
+    public void desactivate(Ticket a) throws DAOException {
         PreparedStatement s = null;
         try {
             s = conex.prepareStatement(DESACTIVATE);
@@ -151,20 +149,20 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
                 throw new SQLException("Error al insertar Ticket");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
     }
 
     @Override
-    public Ticket select(Integer dato) {
+    public Ticket select(Integer dato) throws DAOException {
         PreparedStatement s = null;
         ResultSet rs = null;
         Ticket c = null;
@@ -178,28 +176,28 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
                 throw new SQLException("Cliente no encontrado");
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
-            if (s != null) {
-                try {
-                    s.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
+        }
+        if (s != null) {
+            try {
+                s.close();
+            } catch (SQLException ex) {
+                throw new DAOException(ex);
             }
         }
         return c;
     }
 
     @Override
-    public ObservableList<Ticket> all() {
+    public ObservableList<Ticket> all() throws DAOException {
         PreparedStatement s = null;
         ResultSet rs = null;
         ObservableList<Ticket> clientes = FXCollections.observableArrayList();
@@ -210,20 +208,20 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
                 clientes.add(convertir(rs));
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
@@ -231,7 +229,7 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
     }
 
     @Override
-    public ObservableList<Ticket> like(String dato) {
+    public ObservableList<Ticket> like(String dato) throws DAOException {
         PreparedStatement s = null;
         ResultSet rs = null;
         ObservableList<Ticket> l = FXCollections.observableArrayList();
@@ -243,20 +241,20 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
                 l.add(convertir(rs));
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         } finally {
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
             if (s != null) {
                 try {
                     s.close();
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
+                    throw new DAOException(ex);
                 }
             }
         }
@@ -264,7 +262,7 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
     }
 
     @Override
-    public Ticket convertir(ResultSet rs) {
+    public Ticket convertir(ResultSet rs) throws DAOException {
         try {
             Ticket a = new Ticket();
             a.setTipo(rs.getString("tipo"));
@@ -275,7 +273,7 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
             a.setIncidente(rs.getString("incidente"));
             a.setDetalles(rs.getString("detalles"));
             a.setObservacion(rs.getString("observacion"));
-            a.setResponsable(Controller.getUsuarios().select(rs.getInt("ticketkey")));
+            a.setResponsable(rs.getString("responsable"));
             a.setEstado(rs.getString("estado"));
             a.setClasificacion(rs.getString("clasificacion"));
             a.setFechaSolicitud(rs.getDate("fechasolicitud").toLocalDate());
@@ -289,9 +287,8 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
             a.setTicketkey(rs.getInt("ticketkey"));
             return a;
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            throw new DAOException(ex);
         }
-        return null;
     }
 
 }

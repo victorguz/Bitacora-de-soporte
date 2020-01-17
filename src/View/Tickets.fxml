@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox id="AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="Control.TicketsController">
+   <children>
+      <FlowPane>
+         <children>
+            <VBox>
+               <children>
+                  <Label text="# Ticket" />
+                  <TextField fx:id="textSolicitante1" onAction="#addSolicitante" prefWidth="150.0" promptText="# Ticket" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label text="Nombre de solicitante" />
+                  <TextField fx:id="textSolicitante" onAction="#addSolicitante" prefWidth="150.0" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label text="Empresa" />
+                  <TextField fx:id="textEmpresa" onAction="#addEmpresa" prefWidth="150.0" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label text="Area solicitante" />
+                  <TextField fx:id="textArea" onAction="#addArea" prefWidth="150.0" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label text="Incidencia o solicitud" />
+                  <TextField fx:id="textIncidencia" onAction="#addIncidencia" prefWidth="150.0" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label text="Detalles de la incidencia" />
+                  <TextArea fx:id="textDetalle" prefHeight="50.0" prefWidth="300.0" wrapText="true" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label text="Medio de solicitud" />
+                  <TextField fx:id="textMedio" onAction="#addMedio" prefWidth="150.0" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label text="Responsable de Sistemas" />
+                  <TextField fx:id="textResponsable" onAction="#addResponsable" prefWidth="150.0" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label text="Estado" />
+                  <TextField fx:id="textEstado" onAction="#addEstado" prefWidth="150.0" />
+               </children>
+            </VBox>
+         </children>
+      </FlowPane>
+      <Separator prefWidth="200.0" />
+      <TextField fx:id="textBuscar" onAction="#buscar" promptText="Buscar" />
+      <ListView prefHeight="200.0" />
+   </children>
+</VBox>

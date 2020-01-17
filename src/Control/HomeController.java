@@ -12,12 +12,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -28,28 +25,28 @@ public class HomeController extends Controller implements Initializable {
 
     @FXML
     VBox holderPane;
-    VBox Login;
+    VBox Tickets;
     VBox Admin;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
             // TODO
-            Login = FXMLLoader.load(new File("src/View/Login.fxml").toURL());
-            Admin = FXMLLoader.load(new File("src/View/Administrar.fxml").toURL());
+            Tickets = FXMLLoader.load(new File("src/View/Tickets.fxml").toURL());
+            //Admin = FXMLLoader.load(new File("src/View/Administrar.fxml").toURL());
         } catch (MalformedURLException ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
         } /*finally {
-            Login = new VBox(new Label("Algo ocurrió, contacte al programador."));
+            Tickets = new VBox(new Label("Algo ocurrió, contacte al programador."));
             Admin = new VBox(new Label("Algo ocurrió, contacte al programador."));
         }*/
-        switchLogin();
+        switchTickets();
     }
 
-    public void switchLogin() {
-        set(Login);
+    public void switchTickets() {
+        set(Tickets);
     }
 
     public void switchConfig() {

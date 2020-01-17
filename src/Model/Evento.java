@@ -28,20 +28,17 @@ public class Evento {
     private String descripcion;
     //Si está asociado a un ticket
     private Ticket ticket;
-    //Si está asociado a un usuario
-    private Usuario usuario;
     private LocalDate fecha;
     private LocalTime hora;
 
     public Evento() {
     }
 
-    public Evento(int eventokey, String nombreEvento, String descripcion, Ticket ticketkey, Usuario usuariokey) {
+    public Evento(int eventokey, String nombreEvento, String descripcion, Ticket ticketkey) {
         this.eventokey = eventokey;
         this.nombre = nombreEvento;
         this.descripcion = descripcion;
         this.ticket = ticketkey;
-        this.usuario = usuariokey;
     }
 
     public int getEventokey() {
@@ -76,14 +73,6 @@ public class Evento {
         this.ticket = ticket;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     public LocalDate getFecha() {
         return fecha;
     }
@@ -102,8 +91,8 @@ public class Evento {
 
     @Override
     public String toString() {
-        return "El usuario " + usuario + " realizó la siguiente acción: "
-                + nombre + " en el ticket " + ticket;
+        return "Se realizó la siguiente acción: "
+                + getNombre() + " en el ticket " + getTicket().getTicketkey() +" "+getTicket().getIncidente();
     }
 
 }

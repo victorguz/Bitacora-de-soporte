@@ -17,18 +17,14 @@ import org.sqlite.JDBC;
 public class DAOManager {
 
     private Connection conex;
-    private UsuariosDAO usuarios;
     private TicketsDAO tickets;
     private EventosDAO eventos;
     private DatosDAO datos;
 
-    public DAOManager() {
-        try {
+    public DAOManager() throws SQLException {
             DriverManager.registerDriver(new JDBC());
-            setConex(DriverManager.getConnection("jdbc:sqlite:src/bd/bitacora.db"));
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+            //setConex(DriverManager.getConnection("jdbc:sqlite:src/bd/bitacora.db"));
+            setConex(DriverManager.getConnection("jdbc:sqlite:bd/bitacora.db"));
     }
 
     private Connection getConex() {
@@ -37,13 +33,6 @@ public class DAOManager {
 
     public void setConex(Connection conex) {
         this.conex = conex;
-    }
-
-    public UsuariosDAO getUsuarios() {
-        if (usuarios == null) {
-            usuarios = new UsuariosDAO(conex);
-        }
-        return usuarios;
     }
 
     public TicketsDAO getTickets() {

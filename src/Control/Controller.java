@@ -9,10 +9,12 @@ import DAO.DAOManager;
 import DAO.DatosDAO;
 import DAO.EventosDAO;
 import DAO.TicketsDAO;
-import DAO.UsuariosDAO;
 import ds.desktop.notify.DesktopNotify;
 import ds.desktop.notify.NotifyTheme;
 import java.awt.Color;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
 import javafx.scene.Node;
 import javafx.util.Duration;
@@ -27,17 +29,17 @@ public class Controller {
 
     private static DAOManager getManager() {
         if (manager == null) {
-            manager = new DAOManager();
+            try {
+                manager = new DAOManager();
+            } catch (SQLException ex) {
+                excepcion(ex);
+            }
         }
         return manager;
     }
 
     public static TicketsDAO getTickets() {
         return getManager().getTickets();
-    }
-
-    public static UsuariosDAO getUsuarios() {
-        return getManager().getUsuarios();
     }
 
     public static EventosDAO getEventos() {
@@ -70,12 +72,14 @@ public class Controller {
         nt.setBgGrad(Color.white, Color.LIGHT_GRAY);
         DesktopNotify.setDefaultTheme(nt);
         if (ex.getMessage().contains("sql")) {
-            DesktopNotify.showDesktopMessage("AVISO", getResultOrException(ex.getMessage()), DesktopNotify.ERROR, 10000, (e) -> {
-                System.out.println(ex.getMessage());
-                ex.printStackTrace();
-            });
+            if (!getResultOrException(ex.getMessage()).equalsIgnoreCase("nothing")) {
+                DesktopNotify.showDesktopMessage("AVISO", getResultOrException(ex.getMessage()), DesktopNotify.ERROR, 10000, (e) -> {
+                    System.out.println(ex.getMessage());
+                    ex.printStackTrace();
+                });
+            }
         } else {
-            DesktopNotify.showDesktopMessage("Error", getResultOrException(ex.getMessage()), DesktopNotify.ERROR, 10000, (e) -> {
+            DesktopNotify.showDesktopMessage("Error", ex.getMessage(), DesktopNotify.ERROR, 10000, (e) -> {
                 System.out.println(ex.getMessage());
                 ex.printStackTrace();
             });
@@ -83,8 +87,8 @@ public class Controller {
     }
 
     public static String getResultOrException(String ex) {
-        if (ex.contains("medidas.clienteKey, medidas.fecha")) {
-            return "Este cliente ya tiene medidas en esta fecha";
+        if (ex.contains("(UNIQUE constraint failed: DATOS.nombre, DATOS.dato)")) {
+            return "nothing";
         } else if (ex.contains("clientes.identificacion")) {
             return "Ya existe un cliente con esta identificación";
         } else if (ex.contains("planes.nombre")) {

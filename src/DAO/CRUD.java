@@ -12,19 +12,19 @@ import javafx.collections.ObservableList;
  *
  * @author Victorguz
  */
-public interface CRUD<T, K> {
+public interface CRUD<T, K>  {
 
-    public void insert(T registro);
+    public void insert(T registro)throws DAOException;
 
-    public void update(T registro);
+    public void update(T registro)throws DAOException;
 
-    public void desactivate(T registro);
+    public void desactivate(T registro)throws DAOException;
 
-    public T select(K dato);
-    public ObservableList<T> all();
+    public T select(K dato)throws DAOException;
+    public ObservableList<T> all()throws DAOException;
 
-    public ObservableList<T> like(String dato);
+    public ObservableList<T> like(String dato)throws DAOException;
 
-    public T convertir(ResultSet rs);
+    public T convertir(ResultSet rs)throws DAOException;
 
 }

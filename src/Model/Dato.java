@@ -20,8 +20,7 @@ public class Dato {
     public Dato() {
     }
 
-    public Dato(int datokey, String nombre, String dato) {
-        this.datokey = datokey;
+    public Dato(String nombre, String dato) {
         this.nombre = nombre;
         this.dato = dato;
     }

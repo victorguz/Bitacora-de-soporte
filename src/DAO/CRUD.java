@@ -5,9 +5,12 @@
  */
 package DAO;
 
+import java.sql.ResultSet;
+import javafx.collections.ObservableList;
+
 /**
  *
- * @author Licmora
+ * @author Victorguz
  */
 public interface CRUD<T, K> {
 
@@ -15,8 +18,13 @@ public interface CRUD<T, K> {
 
     public void update(T registro);
 
-    public void delete(T registro);
+    public void desactivate(T registro);
 
     public T select(K dato);
+    public ObservableList<T> all();
+
+    public ObservableList<T> like(String dato);
+
+    public T convertir(ResultSet rs);
 
 }

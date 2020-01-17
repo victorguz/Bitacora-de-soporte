@@ -7,7 +7,7 @@ package Model;
 
 /**
  *
- * @author Licmora
+ * @author Victorguz
  */
 public class Usuario {
 
@@ -15,6 +15,9 @@ public class Usuario {
     private String username;
     private String password;
     private String nombre;
+    private String empresa;
+    private String area;
+
     /**
      * Los roles definen que se puede hacer en la app: -Usuario bitacora: Tiene
      * total control de la app, puede gestionar usuarios y tickets. -Usuario de
@@ -22,13 +25,28 @@ public class Usuario {
      * se avisa de inmediato al responsable de bitacora.
      */
     private String rol;
+    private String estado;
+    private String sesion;//El estado de la sesion
 
-    public int getResponsablekey() {
+    public Usuario() {
+    }
+
+    public Usuario(int usuariokey, String username, String password, String nombre, String empresa, String area, String rol) {
+        this.usuariokey = usuariokey;
+        this.username = username;
+        this.password = password;
+        this.nombre = nombre;
+        this.empresa = empresa;
+        this.area = area;
+        this.rol = rol;
+    }
+
+    public int getUsuariokey() {
         return usuariokey;
     }
 
-    public void setResponsablekey(int responsablekey) {
-        this.usuariokey = responsablekey;
+    public void setUsuariokey(int usuariokey) {
+        this.usuariokey = usuariokey;
     }
 
     public String getUsername() {
@@ -63,4 +81,34 @@ public class Usuario {
         this.rol = rol;
     }
 
+    public String getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(String empresa) {
+        this.empresa = empresa;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public boolean isEmpty() {
+        return getUsername().isEmpty()
+                || getNombre().isEmpty()
+                || getPassword().isEmpty()
+                || getRol().isEmpty();
+    }
 }

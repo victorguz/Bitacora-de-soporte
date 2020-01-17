@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
- *
- * @author Licmora
+ * 
+ * @author Victorguz
  */
 public class Ticket {
 
@@ -19,35 +19,22 @@ public class Ticket {
      * Clave primaria
      */
     private int ticketkey;
-    private int ticket;
     private String tipo;
     private String empresa;
     private String area;
     private String solicitante;
     private String medio;
     private String incidente;
-    /**
-     * Informacion para quien hace el ticket
-     */
     private String detalles;
-    /**
-     * Cuando se resuelve el ticket se muestra este dato
-     */
     private String observacion;
     private Usuario responsable;
     private String estado;
-    /**
-     * Cuando un ticket es modificado se le asigna un nuevo ticketkey y
-     * almacenarlo aquí será lo que dice quien es el que se muestra en la lista,
-     * para que no se repitan.
-     */
-    private int nuevoticket;
-    private LocalDate modificado;
+    private String clasificacion;//Software o hardware
     private LocalDate fechaSolicitud;
+    private LocalDate fechaAproximada;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
     private LocalTime horaSolicitud;
-    /**
-     * Hora aproximada de respuesta
-     */
     private LocalTime horaAproximada;
     private LocalTime horaInicio;
     private LocalTime horaFin;
@@ -58,14 +45,6 @@ public class Ticket {
 
     public void setTicketkey(int ticketkey) {
         this.ticketkey = ticketkey;
-    }
-
-    public int getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(int ticket) {
-        this.ticket = ticket;
     }
 
     public String getTipo() {
@@ -140,38 +119,6 @@ public class Ticket {
         this.estado = estado;
     }
 
-    public int getNuevoticket() {
-        return nuevoticket;
-    }
-
-    public void setNuevoticket(int nuevoticket) {
-        this.nuevoticket = nuevoticket;
-    }
-
-    public LocalDate getModificado() {
-        return modificado;
-    }
-
-    public void setModificado(LocalDate modificado) {
-        this.modificado = modificado;
-    }
-
-    public LocalDate getFechaSolicitud() {
-        return fechaSolicitud;
-    }
-
-    public void setFechaSolicitud(LocalDate fechaSolicitud) {
-        this.fechaSolicitud = fechaSolicitud;
-    }
-
-    public LocalTime getHoraSolicitud() {
-        return horaSolicitud;
-    }
-
-    public void setHoraSolicitud(LocalTime horaSolicitud) {
-        this.horaSolicitud = horaSolicitud;
-    }
-
     public LocalTime getHoraAproximada() {
         return horaAproximada;
     }
@@ -202,6 +149,54 @@ public class Ticket {
 
     public void setResponsable(Usuario responsable) {
         this.responsable = responsable;
+    }
+
+    public String getClasificacion() {
+        return clasificacion;
+    }
+
+    public void setClasificacion(String clasificacion) {
+        this.clasificacion = clasificacion;
+    }
+
+    public LocalDate getFechaSolicitud() {
+        return fechaSolicitud;
+    }
+
+    public void setFechaSolicitud(LocalDate fechaSolicitud) {
+        this.fechaSolicitud = fechaSolicitud;
+    }
+
+    public LocalDate getFechaAproximada() {
+        return fechaAproximada;
+    }
+
+    public void setFechaAproximada(LocalDate fechaAproximada) {
+        this.fechaAproximada = fechaAproximada;
+    }
+
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public LocalDate getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(LocalDate fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public LocalTime getHoraSolicitud() {
+        return horaSolicitud;
+    }
+
+    public void setHoraSolicitud(LocalTime horaSolicitud) {
+        this.horaSolicitud = horaSolicitud;
     }
     
 

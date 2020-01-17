@@ -5,8 +5,9 @@
  */
 package DAO;
 
-import Control.Controller;
-import Model.Evento;
+import Model.Dato;
+import Model.Dato;
+import Model.Dato;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -22,33 +23,36 @@ import javafx.collections.ObservableList;
  *
  * @author Victorguz
  */
-public class EventosDAO implements CRUD<Evento, Integer> {
+public class DatosDAO implements CRUD<Dato, Integer> {
 
     Connection conex;
 
-    final String INSERT = "INSERT INTO EventoS (nombre,descripcion,ticketkey,Eventokey,fecha,hora)"
-            + "VALUES (?, ?, ?, ?, ?, ?)";
-    final String ALL = "SELECT eventokey,nombre,descripcion,ticketkey,usuariokey,fecha,hora FROM EVENTOS";
-    final String LIKE = "SELECT eventokey,nombre,descripcion,ticketkey,usuariokey,fecha,hora FROM EVENTOS order by nombre like %?%";
-    final String ONE = "SELECT eventokey,nombre,descripcion,ticketkey,usuariokey,fecha,hora FROM EVENTOS where eventokey = ?";
+    final String INSERT = "INSERT INTO DatoS (nombre, dato, usedate, usetime)"
+            + "VALUES (?, ?, ?, ?, ?)";
+    final String ALL = "SELECT Datokey,nombre, dato "
+            +" FROM DatoS order by usetime desc, usedate desc";
+    final String LIKE = "SELECT Datokey,nombre, dato "
+            +" FROM DatoS order by dato like %?%";
+    final String ONE = "SELECT Datokey,nombre, dato "
+            +" FROM DatoS  where Datokey=?";
+    final String UPDATE = "UPDATE DatoS SET nombre = ?, dato = ?, usedate=?, usetime=? WHERE Datokey = ?";
+    final String DESACTIVATE = "update Datos set estado = ? where Datokey = ?";
 
-    public EventosDAO(Connection conex) {
+    public DatosDAO(Connection conex) {
         this.conex = conex;
     }
-
+    
     @Override
-    public void insert(Evento a) {
+    public void insert(Dato a) {
         PreparedStatement s = null;
         try {
             s = conex.prepareStatement(INSERT);
             s.setString(1, a.getNombre());
-            s.setString(2, a.getDescripcion());
-            s.setInt(3, a.getTicket().getTicketkey());
-            s.setInt(4, a.getUsuario().getUsuariokey());
-            s.setDate(5, Date.valueOf(LocalDate.now()));
-            s.setTime(6, Time.valueOf(LocalTime.now()));
+            s.setString(2, a.getDato());
+            s.setDate(3, Date.valueOf(LocalDate.now()));
+            s.setTime(4, Time.valueOf(LocalTime.now()));
             if (s.executeUpdate() == 0) {
-                throw new SQLException("Error al insertar Evento");
+                throw new SQLException("Error al insertar Dato");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -64,18 +68,59 @@ public class EventosDAO implements CRUD<Evento, Integer> {
     }
 
     @Override
-    public void update(Evento a) {
+    public void update(Dato a) {
+        PreparedStatement s = null;
+        try {
+            s = conex.prepareStatement(UPDATE);
+            s.setString(1, a.getNombre());
+            s.setString(2, a.getDato());
+            s.setDate(3, Date.valueOf(LocalDate.now()));
+            s.setTime(4, Time.valueOf(LocalTime.now()));
+            s.setInt(5, a.getDatokey());
+            if (s.executeUpdate() == 0) {
+                throw new SQLException("Error al insertar Dato");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (s != null) {
+                try {
+                    s.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
-    public void desactivate(Evento a) {
+    public void desactivate(Dato a) {
+        PreparedStatement s = null;
+        try {
+            s = conex.prepareStatement(DESACTIVATE);
+            s.setString(1, "inactivo");
+            s.setInt(2, a.getDatokey());
+            if (s.executeUpdate() == 0) {
+                throw new SQLException("Error al insertar Dato");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (s != null) {
+                try {
+                    s.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
-    public Evento select(Integer dato) {
+    public Dato select(Integer dato) {
         PreparedStatement s = null;
         ResultSet rs = null;
-        Evento c = null;
+        Dato c = null;
         try {
             s = conex.prepareStatement(ONE);
             s.setInt(1, dato);
@@ -83,7 +128,7 @@ public class EventosDAO implements CRUD<Evento, Integer> {
             if (rs.next()) {
                 c = convertir(rs);
             } else {
-                throw new SQLException("Evento no encontrado");
+                throw new SQLException("Dato no encontrado");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -107,15 +152,15 @@ public class EventosDAO implements CRUD<Evento, Integer> {
     }
 
     @Override
-    public ObservableList<Evento> all() {
+    public ObservableList<Dato> all() {
         PreparedStatement s = null;
         ResultSet rs = null;
-        ObservableList<Evento> Eventos = FXCollections.observableArrayList();
+        ObservableList<Dato> Datos = FXCollections.observableArrayList();
         try {
             s = conex.prepareStatement(ALL);
             rs = s.executeQuery();
             while (rs.next()) {
-                Eventos.add(convertir(rs));
+                Datos.add(convertir(rs));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -135,14 +180,14 @@ public class EventosDAO implements CRUD<Evento, Integer> {
                 }
             }
         }
-        return Eventos;
+        return Datos;
     }
 
     @Override
-    public ObservableList<Evento> like(String dato) {
+    public ObservableList<Dato> like(String dato) {
         PreparedStatement s = null;
         ResultSet rs = null;
-        ObservableList<Evento> l = FXCollections.observableArrayList();
+        ObservableList<Dato> l = FXCollections.observableArrayList();
         try {
             s = conex.prepareStatement(LIKE);
             s.setString(1, dato.toLowerCase());
@@ -172,20 +217,17 @@ public class EventosDAO implements CRUD<Evento, Integer> {
     }
 
     @Override
-    public Evento convertir(ResultSet rs) {
+    public Dato convertir(ResultSet rs) {
         try {
-            Evento c = new Evento();
-            c.setEventokey(rs.getInt("Eventokey"));
+            Dato c = new Dato();
+            c.setDatokey(rs.getInt("Datokey"));
             c.setNombre(rs.getString("nombre"));
-            c.setDescripcion(rs.getString("descripcion"));
-            c.setTicket(Controller.getTickets().select(rs.getInt("ticketkey")));
-            c.setUsuario(Controller.getUsuarios().select(rs.getInt("usuariokey")));
-            c.setFecha(rs.getDate("fecha").toLocalDate());
-            c.setHora(rs.getTime("hora").toLocalTime());
+            c.setDato(rs.getString("dato"));
             return c;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return null;
     }
+
 }

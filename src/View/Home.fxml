@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.HomeController">
+   <left>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton prefWidth="100.0" text="Inicio" />
+            <JFXButton prefWidth="100.0" text="Incidencias" />
+            <JFXButton prefWidth="100.0" text="Personal" />
+            <JFXButton prefWidth="100.0" text="Eventos" />
+            <JFXButton prefWidth="100.0" />
+            <JFXButton prefWidth="100.0" />
+            <JFXButton prefWidth="100.0" text="Administrador" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <VBox fx:id="holderPane" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

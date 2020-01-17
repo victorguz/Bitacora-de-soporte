@@ -5,45 +5,44 @@
  */
 package Model;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 /**
  * Esta clase gestiona los eventos de las acciones que se pueden realizar en
- * esta app.
- * Estos eventos funcionan para realizar estadisticas tales como: 
- * -Tickets aplazados
- * -Tickets terminados
- * -Tickets eliminados
- * -Usuarios creados
- * -Usuarios 
+ * esta app. Estos eventos funcionan para realizar estadisticas tales como:
+ * -Tickets aplazados -Tickets terminados -Tickets eliminados -Usuarios creados
+ * -Usuarios
  *
- * @author Licmora
+ * @author Victorguz
  */
 public class Evento {
 
-    private int eventokey=0;
+    private int eventokey = 0;
     /**
      * Evento de ticket: Eliminacion o modificacion de ticket. Evento de
      * usuario: Eliminacion o modificacion de usuario.
      */
-    private String nombreEvento;
+    private String nombre;
     //Es una descripcion de los eventos que se pueden realizar en esta app.
     private String descripcion;
     //Si está asociado a un ticket
-    private Ticket ticketkey;
+    private Ticket ticket;
     //Si está asociado a un usuario
-    private Usuario usuariokey;
+    private Usuario usuario;
+    private LocalDate fecha;
+    private LocalTime hora;
 
     public Evento() {
     }
 
     public Evento(int eventokey, String nombreEvento, String descripcion, Ticket ticketkey, Usuario usuariokey) {
         this.eventokey = eventokey;
-        this.nombreEvento = nombreEvento;
+        this.nombre = nombreEvento;
         this.descripcion = descripcion;
-        this.ticketkey = ticketkey;
-        this.usuariokey = usuariokey;
+        this.ticket = ticketkey;
+        this.usuario = usuariokey;
     }
-
-    
 
     public int getEventokey() {
         return eventokey;
@@ -53,12 +52,12 @@ public class Evento {
         this.eventokey = eventokey;
     }
 
-    public String getNombreEvento() {
-        return nombreEvento;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombreEvento(String nombreEvento) {
-        this.nombreEvento = nombreEvento;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getDescripcion() {
@@ -69,24 +68,42 @@ public class Evento {
         this.descripcion = descripcion;
     }
 
-    public Ticket getTicketkey() {
-        return ticketkey;
+    public Ticket getTicket() {
+        return ticket;
     }
 
-    public void setTicketkey(Ticket ticketkey) {
-        this.ticketkey = ticketkey;
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 
-    public Usuario getUsuariokey() {
-        return usuariokey;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUsuariokey(Usuario usuariokey) {
-        this.usuariokey = usuariokey;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
-@Override
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public LocalTime getHora() {
+        return hora;
+    }
+
+    public void setHora(LocalTime hora) {
+        this.hora = hora;
+    }
+
+    @Override
     public String toString() {
-        return "El usuario " + usuariokey + " realizó la siguiente acción: "
-                + nombreEvento + " en el ticket " + ticketkey;
+        return "El usuario " + usuario + " realizó la siguiente acción: "
+                + nombre + " en el ticket " + ticket;
     }
+
 }

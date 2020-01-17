@@ -26,7 +26,7 @@ public class Usuario {
      */
     private String rol;
     private String estado;
-    private String sesion;//El estado de la sesion
+    private boolean sesion;//El estado de la sesion
 
     public Usuario() {
     }
@@ -110,5 +110,13 @@ public class Usuario {
                 || getNombre().isEmpty()
                 || getPassword().isEmpty()
                 || getRol().isEmpty();
+    }
+
+    public boolean getSesion() {
+        return sesion;
+    }
+
+    public void setSesion(boolean sesion) {
+        this.sesion = sesion;
     }
 }

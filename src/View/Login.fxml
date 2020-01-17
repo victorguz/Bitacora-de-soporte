@@ -12,7 +12,7 @@
    <children>
       <TextField fx:id="textUsername" promptText="Nombre de usuario" />
       <PasswordField fx:id="textPassword" promptText="Contraseña" />
-      <JFXButton onAction="#iniciar" text="Iniciar" />
+      <JFXButton onAction="#iniciar"  text="Iniciar" />
       <HBox alignment="CENTER" spacing="3.0">
          <children>
             <Label text="Developed by" />

@@ -35,6 +35,8 @@ public class UsuariosDAO implements CRUD<Usuario, Integer> {
             + " area, empresa, rol FROM USUARIOS order by nombre like %?%";
     final String ONE = "SELECT usuariokey,usuario,contrasena, nombre, "
             + "area, empresa FROM USUARIOS where usuariokey=?";
+    final String LOGIN = "SELECT usuariokey,usuario,contrasena, nombre, "
+            + "area, empresa FROM USUARIOS where usuario = ? and contrasena = ?";
     final String UPDATE = "UPDATE USUARIOS SET usuario = ?,"
             + " contrasena = ?, nombre = ?, area = ?, "
             + "empresa = ?, rol=?, usedate=?, usetime=? WHERE usuariokey = ?";
@@ -43,7 +45,7 @@ public class UsuariosDAO implements CRUD<Usuario, Integer> {
     public UsuariosDAO(Connection conex) {
         this.conex = conex;
     }
-    
+
     @Override
     public void insert(Usuario a) {
         PreparedStatement s = null;
@@ -140,6 +142,41 @@ public class UsuariosDAO implements CRUD<Usuario, Integer> {
                 c = convertir(rs);
             } else {
                 throw new SQLException("Usuario no encontrado");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (s != null) {
+                try {
+                    s.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return c;
+    }
+
+    public Usuario iniciar(String user, String pass) {
+        PreparedStatement s = null;
+        ResultSet rs = null;
+        Usuario c = null;
+        try {
+            s = conex.prepareStatement(LOGIN);
+            s.setString(1, user);
+            s.setString(2, pass);
+            rs = s.executeQuery();
+            if (rs.next()) {
+                c = convertir(rs);
+            } else {
+                throw new SQLException("Usuario o contraseña incorrecta");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

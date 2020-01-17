@@ -36,27 +36,27 @@ public class LoginController extends Controller implements Initializable {
         // TODO
     }
 
-    @FXML
-    void iniciar(ActionEvent event) {
-        String user="";
-        String pass="";
-        if(textUsername.getText().isEmpty()){
-            mensaje("Digite un nombre de usuario", "Aviso");
-        }else{
-            user=textUsername.getText();
+    public void iniciar() {
+        String user = "";
+        String pass = "";
+        if (!textUsername.getText().isEmpty()) {
+            user = textUsername.getText();
+            if (textPassword.getText().isEmpty()) {
+                mensaje("Digite una contraseña", "Aviso");
+            } else {
+                user = textPassword.getText();
+                Usuario u = getUsuarios().iniciar(user, pass);
+                u.setSesion(true);
+                getUsuarios().update(u);
+            }
+        } else {
+            mensaje("Digite su nombre de usuario", "Aviso");
         }
-        
-        if(textPassword.getText().isEmpty()){
-            mensaje("Digite una contraseña", "Aviso");
-        }else{
-            user=textPassword.getText();
-        }
-        
+
         System.out.println("Sesion iniciada");
     }
 
-    @FXML
-    void link(MouseEvent event) {
+    public void link() {
 
     }
 

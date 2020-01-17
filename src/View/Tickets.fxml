@@ -1,76 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox id="AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="Control.TicketsController">
+<VBox id="AnchorPane" styleClass="y" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.TicketsController">
    <children>
-      <FlowPane>
+      <HBox>
          <children>
-            <VBox>
+            <VBox styleClass="x">
+               <children>
+                  <Label text="Buscar" />
+                  <TextField fx:id="textBuscar" onAction="#buscar" promptText="Buscar" />
+               </children>
+            </VBox>
+            <VBox styleClass="x">
+               <children>
+                  <Label text="Tickets" />
+                  <ComboBox fx:id="comboTickets" promptText="Aquí aparecerían los tickets (si tuvieras alguno)" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Separator />
+      <FlowPane styleClass="flowpane">
+         <children>
+            <VBox styleClass="x">
                <children>
                   <Label text="# Ticket" />
-                  <TextField fx:id="textSolicitante1" onAction="#addSolicitante" prefWidth="150.0" promptText="# Ticket" />
+                  <TextField fx:id="textTicket" onAction="#getTicket" prefWidth="150.0" promptText="# Ticket" />
                </children>
             </VBox>
-            <VBox>
+            <VBox styleClass="x">
                <children>
                   <Label text="Nombre de solicitante" />
-                  <TextField fx:id="textSolicitante" onAction="#addSolicitante" prefWidth="150.0" />
+                  <TextField fx:id="textSolicitante" onAction="#addSolicitante" prefWidth="150.0" promptText="Nombre de solicitante" />
                </children>
             </VBox>
-            <VBox>
+            <VBox styleClass="x">
                <children>
-                  <Label text="Empresa" />
-                  <TextField fx:id="textEmpresa" onAction="#addEmpresa" prefWidth="150.0" />
+                  <Label text="Empresa*" />
+                  <TextField fx:id="textEmpresa" onAction="#addEmpresa" prefWidth="150.0" promptText="Empresa" />
                </children>
             </VBox>
-            <VBox>
+            <VBox styleClass="x">
                <children>
-                  <Label text="Area solicitante" />
-                  <TextField fx:id="textArea" onAction="#addArea" prefWidth="150.0" />
+                  <Label text="Area solicitante*" />
+                  <TextField fx:id="textArea" onAction="#addArea" prefWidth="150.0" promptText="Area solicitante" />
                </children>
             </VBox>
-            <VBox>
-               <children>
-                  <Label text="Incidencia o solicitud" />
-                  <TextField fx:id="textIncidencia" onAction="#addIncidencia" prefWidth="150.0" />
-               </children>
-            </VBox>
-            <VBox>
-               <children>
-                  <Label text="Detalles de la incidencia" />
-                  <TextArea fx:id="textDetalle" prefHeight="50.0" prefWidth="300.0" wrapText="true" />
-               </children>
-            </VBox>
-            <VBox>
+            <VBox styleClass="x">
                <children>
                   <Label text="Medio de solicitud" />
-                  <TextField fx:id="textMedio" onAction="#addMedio" prefWidth="150.0" />
+                  <TextField fx:id="textMedio" onAction="#addMedio" prefWidth="150.0" promptText="Medio de solicitud" />
                </children>
             </VBox>
-            <VBox>
+            <VBox styleClass="x">
+               <children>
+                  <Label text="Incidencia o solicitud" />
+                  <TextField fx:id="textIncidencia" onAction="#addIncidencia" prefWidth="150.0" promptText="Incidencia o solicitud" />
+               </children>
+            </VBox>
+            <VBox prefHeight="67.0" prefWidth="459.0" styleClass="x">
+               <children>
+                  <Label text="Detalles de la solicitud" />
+                  <TextArea fx:id="textDetalle" promptText="Detalles de la incidencia" wrapText="true" />
+               </children>
+            </VBox>
+            <VBox styleClass="x">
                <children>
                   <Label text="Responsable de Sistemas" />
-                  <TextField fx:id="textResponsable" onAction="#addResponsable" prefWidth="150.0" />
+                  <TextField fx:id="textResponsable" onAction="#addResponsable" prefWidth="150.0" promptText="Responsable de Sistemas" />
                </children>
             </VBox>
-            <VBox>
+            <VBox styleClass="x">
                <children>
-                  <Label text="Estado" />
-                  <TextField fx:id="textEstado" onAction="#addEstado" prefWidth="150.0" />
+                  <Label text="Estado de la solicitud" />
+                  <TextField fx:id="textEstado" onAction="#addEstado" prefWidth="150.0" promptText="Estado" />
+               </children>
+            </VBox>
+            <VBox styleClass="x">
+               <children>
+                  <Label text="Fecha de solicitud" />
+                  <TextField fx:id="textFechaSolicitud" editable="false" />
+                  <HBox alignment="CENTER_LEFT" prefWidth="150.0">
+                     <children>
+                        <CheckBox fx:id="checkSolicitud" mnemonicParsing="false" text="Auto" />
+                        <JFXDatePicker fx:id="fechaSolicitud" onAction="#setFechaSolicitud" prefHeight="31.0" prefWidth="0.0" styleClass="x" />
+                        <JFXDatePicker fx:id="horaSolicitud" onAction="#setFechaSolicitud" prefHeight="31.0" prefWidth="0.0" showTime="true" styleClass="x" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox styleClass="x">
+               <children>
+                  <Label text="Fecha aprox. solucion" />
+                  <TextField fx:id="textFechaRespuesta" editable="false" />
+                  <HBox alignment="CENTER_LEFT" prefWidth="150.0">
+                     <children>
+                        <CheckBox fx:id="checkRespuesta" mnemonicParsing="false" text="Auto" />
+                        <JFXDatePicker fx:id="fechaRespuesta" onAction="#setFechaRespuesta" prefHeight="31.0" prefWidth="0.0" styleClass="x" />
+                        <JFXDatePicker fx:id="horaRespuesta" onAction="#setFechaRespuesta" prefHeight="31.0" prefWidth="0.0" showTime="true" styleClass="x" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox styleClass="x">
+               <children>
+                  <Label text="Fecha de inicio" />
+                  <TextField fx:id="textFechaInicio" editable="false" />
+                  <HBox alignment="CENTER_LEFT" prefWidth="150.0">
+                     <children>
+                        <JFXDatePicker fx:id="fechaInicio" onAction="#setFechaInicio" prefHeight="31.0" prefWidth="13.0" styleClass="x" />
+                        <JFXDatePicker fx:id="horaInicio" onAction="#setFechaInicio" prefHeight="31.0" prefWidth="0.0" showTime="true" styleClass="x" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox styleClass="x">
+               <children>
+                  <Label text="Fecha de fin" />
+                  <TextField fx:id="textFechaFin" editable="false" />
+                  <HBox alignment="CENTER_LEFT" prefWidth="150.0">
+                     <children>
+                        <JFXDatePicker fx:id="fechaFin" onAction="#setFechaFin" prefHeight="31.0" prefWidth="0.0" styleClass="x" />
+                        <JFXDatePicker fx:id="horaFin" onAction="#setFechaFin" prefHeight="31.0" prefWidth="0.0" showTime="true" styleClass="x" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </children>
       </FlowPane>
-      <Separator prefWidth="200.0" />
-      <TextField fx:id="textBuscar" onAction="#buscar" promptText="Buscar" />
-      <ListView prefHeight="200.0" />
+      <FlowPane alignment="CENTER" hgap="10.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#crear" prefWidth="150.0" text="Crear" />
+            <Button mnemonicParsing="false" onAction="#modificar" prefWidth="150.0" text="Modificar" />
+            <Button mnemonicParsing="false" onAction="#eliminar" prefWidth="100.0" styleClass="delete-button" text="Eliminar" />
+         </children>
+      </FlowPane>
    </children>
 </VBox>

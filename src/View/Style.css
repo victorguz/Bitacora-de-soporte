@@ -11,3 +11,85 @@ and open the template in the editor.
 .link:hover{
     -fx-underline: true;
 }
+
+.button, .toggle-button,.date-picker > .arrow-button{
+    -fx-background-color: white;
+    -fx-background-radius: 4;
+    -fx-border-color:  rgb(230,230,230);
+    -fx-border-radius: 4;
+    -fx-border-width: 1;
+    -fx-text-fill: black;
+}
+
+.delete-button{
+    -fx-background-color:  #f17777;
+    -fx-background-radius: 4;
+    -fx-border-color:  transparent;
+    -fx-border-radius: 4;
+    -fx-border-width: 1;
+    -fx-text-fill: white;
+}
+
+.text-field:hover,.text-field:focused,.jfx-button:hover,.jfx-button:focused, 
+.toggle-button:hover, .toggle-button:focused, .text-area:hover, 
+.text-area:focused, .combo-box:hover, .combo-box:focused,
+.date-picker > .arrow-button:hover,.date-picker > .arrow-button:focused{
+    -fx-border-color:  #630eb8;
+}
+
+.text-field, .text-area,.combo-box{
+    -fx-background-color: white;
+    -fx-background-radius: 4;
+    -fx-border-color:  rgb(230,230,230);
+    -fx-border-radius: 4;
+    -fx-border-insets: 2.5 5 2.5 5;    
+    -fx-text-fill: black;
+}
+
+/*Configuracion vbox blanco*/
+.blanco{
+    -fx-effect: dropshadow(gaussian, rgba(200, 200, 200, 1), 10, 0.5, 0.0, 0.0);
+    -fx-background-color: white;
+    -fx-background-radius: 0;
+    -fx-spacing: 17;
+    -fx-padding: 15;
+    -fx-alignment: TOP_CENTER;
+}
+.side{
+    -fx-effect: dropshadow(gaussian, rgba(200, 200, 200, 1), 5, 0.2, 1, -1);
+    -fx-background-color: white;
+    -fx-background-radius: 0;
+    -fx-spacing: 17;
+    -fx-padding: 15;
+    -fx-alignment: TOP_CENTER;
+}
+/*Configuracion vbox que no son blancos ni centrados o usados para etiquetas de textfields*/
+.x{
+    -fx-effect: null;
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-spacing: 0;
+    -fx-padding: 0;
+    -fx-alignment: TOP_LEFT;
+}
+/*Configuracion vbox que va detrás de la escena -no es el home*/
+.y{
+    -fx-effect: null;
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-spacing: 15;
+    -fx-padding: 0;
+    -fx-alignment: TOP_LEFT;
+}
+.flowpane{
+    -fx-row-valignment: center;
+    -fx-vgap: 17;
+    -fx-alignment: CENTER;
+}
+
+.jfx-date-picker{
+    -fx-background-color: transparent;
+    -fx-border-radius: 4;      
+    -fx-border-color:  transparent;
+    -fx-text-fill: black;
+}

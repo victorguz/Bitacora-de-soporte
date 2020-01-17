@@ -33,8 +33,9 @@ public class DatosDAO implements CRUD<Dato, Integer> {
             +" FROM DatoS order by dato like %?%";
     final String ONE = "SELECT Datokey,nombre, dato "
             +" FROM DatoS  where Datokey=?";
-    final String UPDATE = "UPDATE DatoS SET nombre = ?, dato = ?, usedate=?, usetime=? WHERE Datokey = ?";
-    final String DESACTIVATE = "update Datos set estado = ? where Datokey = ?";
+    final String UPDATE = "UPDATE DatoS SET nombre = ?, dato = ?,"
+            + " usedate=?, usetime=? WHERE Datokey = ?";
+    final String DELETE = "DELETE FROM Datos where Datokey = ?";
 
     public DatosDAO(Connection conex) {
         this.conex = conex;
@@ -95,9 +96,8 @@ public class DatosDAO implements CRUD<Dato, Integer> {
     public void desactivate(Dato a) throws DAOException {
         PreparedStatement s = null;
         try {
-            s = conex.prepareStatement(DESACTIVATE);
-            s.setString(1, "inactivo");
-            s.setInt(2, a.getDatokey());
+            s = conex.prepareStatement(DELETE);
+            s.setInt(1, a.getDatokey());
             if (s.executeUpdate() == 0) {
                 throw new SQLException("Error al insertar Dato");
             }

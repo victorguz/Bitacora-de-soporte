@@ -7,16 +7,22 @@ package Control;
 
 import DAO.DAOException;
 import Model.Dato;
+import Model.Ticket;
+import com.jfoenix.controls.JFXDatePicker;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.util.converter.LocalDateStringConverter;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -28,6 +34,15 @@ import org.controlsfx.control.textfield.TextFields;
 public class TicketsController extends Controller implements Initializable {
 
     @FXML
+    private TextField textBuscar;
+
+    @FXML
+    private ComboBox<Ticket> comboTickets;
+
+    @FXML
+    private TextField textTicket;
+
+    @FXML
     private TextField textSolicitante;
 
     @FXML
@@ -35,6 +50,9 @@ public class TicketsController extends Controller implements Initializable {
 
     @FXML
     private TextField textArea;
+
+    @FXML
+    private TextField textMedio;
 
     @FXML
     private TextField textIncidencia;
@@ -49,10 +67,48 @@ public class TicketsController extends Controller implements Initializable {
     private TextField textEstado;
 
     @FXML
-    private TextField textMedio;
+    private CheckBox checkSolicitud;
 
     @FXML
-    private TextField textBuscar;
+    private JFXDatePicker fechaSolicitud;
+
+    @FXML
+    private JFXDatePicker horaSolicitud;
+
+    @FXML
+    private CheckBox checkRespuesta;
+
+    @FXML
+    private JFXDatePicker fechaRespuesta;
+
+    @FXML
+    private JFXDatePicker horaRespuesta;
+
+    @FXML
+    private JFXDatePicker fechaInicio;
+
+    @FXML
+    private JFXDatePicker horaInicio;
+
+    @FXML
+    private JFXDatePicker fechaFin;
+
+    @FXML
+    private JFXDatePicker horaFin;
+
+    @FXML
+    private TextField textFechaFin;
+
+    @FXML
+    private TextField textFechaInicio;
+
+    @FXML
+    private TextField textFechaSolicitud;
+
+    @FXML
+    private TextField textFechaRespuesta;
+
+    ObservableList<Ticket> tickets = FXCollections.observableArrayList();
 
     ObservableList<String> solicitantes = FXCollections.observableArrayList();
     AutoCompletionBinding<String> autoSolicitantes;
@@ -88,6 +144,18 @@ public class TicketsController extends Controller implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         setDatos();
+        fechaSolicitud.setValue(LocalDate.now());
+        horaSolicitud.setTime(LocalTime.now());
+        fechaRespuesta.setValue(LocalDate.now());
+        horaRespuesta.setTime(LocalTime.now());
+        fechaInicio.setValue(LocalDate.now());
+        horaInicio.setTime(LocalTime.now());
+        fechaFin.setValue(LocalDate.now());
+        horaFin.setTime(LocalTime.now());
+        setFechaFin();
+        setFechaInicio();
+        setFechaSolicitud();
+        setFechaRespuesta();
     }
 
     public void addSolicitante() {
@@ -267,7 +335,128 @@ public class TicketsController extends Controller implements Initializable {
     }
 
     public void buscar() {
-        System.out.println(autoBuscar.getCompletionTarget());
+        try {
+            tickets = getTickets().like(textBuscar.getText());
+            comboTickets.getItems().setAll(tickets);
+        } catch (DAOException ex) {
+            excepcion(ex);
+        }
     }
 
+    public void crear() {
+        Ticket a = captar();
+        if (a.isEmpty()) {
+            mensaje("A este ticket le faltan datos", "Error");
+        } else {
+
+        }
+    }
+
+    public void modificar() {
+
+    }
+
+    public void eliminar() {
+
+    }
+
+    public Ticket captar() {
+        Ticket a = new Ticket();
+        a.setTicket(textTicket.getText());
+        a.setSolicitante(textSolicitante.getText());
+        a.setEmpresa(textEmpresa.getText());
+        a.setArea(textArea.getText());
+        a.setMedio(textMedio.getText());
+        a.setIncidente(textIncidencia.getText());
+        a.setDetalles(textDetalle.getText());
+        a.setResponsable(textResponsable.getText());
+        a.setEstado(textEstado.getText());
+        a.setFechaSolicitud(fechaSolicitud.getValue());
+        a.setHoraSolicitud(horaSolicitud.getTime());
+        a.setFechaAproximada(fechaRespuesta.getValue());
+        a.setHoraAproximada(horaRespuesta.getTime());
+        a.setFechaInicio(fechaInicio.getValue());
+        a.setHoraInicio(fechaInicio.getTime());
+        a.setFechaFin(fechaFin.getValue());
+        a.setHoraFin(fechaFin.getTime());
+        return a;
+    }
+
+    public void mostrar(Ticket a) {
+        if (a != null) {
+            textTicket.setText(a.getTicket());
+            textSolicitante.setText(a.getSolicitante());
+            textEmpresa.setText(a.getEmpresa());
+            textArea.setText(a.getArea());
+            textMedio.setText(a.getMedio());
+            textIncidencia.setText(a.getIncidente());
+            textDetalle.setText(a.getDetalles());
+            textResponsable.setText(a.getResponsable());
+            textEstado.setText(a.getEstado());
+        } else {
+            mensaje("No hay nada que mostrar", "error");
+        }
+    }
+
+    public void getTicket() {
+        if (!textTicket.getText().isEmpty()) {
+            try {
+                Ticket a = getTickets().select(textTicket.getText());
+                mostrar(a);
+            } catch (DAOException ex) {
+                excepcion(ex);
+            }
+        }
+    }
+
+    public void setFechaSolicitud() {
+        textFechaSolicitud.setText(fechaSolicitud.getValue() + " " + horaSolicitud.getTime().toString().substring(0, 5));
+    }
+
+    public void setFechaRespuesta() {
+        textFechaRespuesta.setText(fechaRespuesta.getValue() + " " + horaRespuesta.getTime().toString().substring(0, 5));
+    }
+
+    public void setFechaInicio() {
+        textFechaInicio.setText(fechaInicio.getValue() + " " + horaInicio.getTime().toString().substring(0, 5));
+    }
+
+    public void setFechaFin() {
+        textFechaFin.setText(fechaFin.getValue() + " " + horaFin.getTime().toString().substring(0, 5));
+    }
+
+    public void updated() {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Runnable updater = new Runnable() {
+                    @Override
+                    public void run() {
+                        //TODO HERE
+                        if (checkRespuesta.isSelected()) {
+                            fechaRespuesta.setValue(LocalDate.now());
+                            fechaRespuesta.setTime(LocalTime.now());
+                            setFechaRespuesta();
+                        }
+                        if (checkSolicitud.isSelected()) {
+                            fechaSolicitud.setValue(LocalDate.now());
+                            fechaSolicitud.setTime(LocalTime.now());
+                            setFechaSolicitud();
+                        }
+
+                    }
+                };
+                while (true) {
+                    try {
+                        Thread.sleep(60000);
+                    } catch (InterruptedException ex) {
+                    }
+                    // UI update is run on the Application thread
+                    Platform.runLater(updater);
+                }
+            }
+        });
+        t.setDaemon(true);
+        t.start();
+    }
 }

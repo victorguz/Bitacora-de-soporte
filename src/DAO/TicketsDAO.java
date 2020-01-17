@@ -12,8 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -25,28 +23,28 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
 
     Connection conex;
 
-    final String INSERT = "INSERT INTO TicketS (tipo, empresa, area, solicitante, "
+    final String INSERT = "INSERT INTO TicketS (ticket, tipo, empresa, area, solicitante, "
             + "medio, incidente, detalles, observacion, responsable, "
             + "estado, clasificacion, fechaSolicitud, horaSolicitud, "
             + "fechaAproximada, horaAproximada, fechaInicio, horaInicio, "
             + "fechaFin, horaFin)"
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    final String ALL = "SELECT ticketkey, tipo, empresa, area, solicitante, "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    final String ALL = "SELECT ticketkey, ticket, tipo, empresa, area, solicitante, "
             + "medio, incidente, detalles, observacion, responsable, "
             + "estado, clasificacion, fechaSolicitud, horaSolicitud, "
             + "fechaAproximada, horaAproximada, fechaInicio, horaInicio, "
-            + "fechaFin, horaFin FROM TICKETS limit 100";
-    final String LIKE = "SELECT ticketkey, tipo, empresa, area, solicitante, "
+            + "fechaFin, horaFin FROM TICKETS order by ticket desc limit 100";
+    final String LIKE = "SELECT ticketkey, ticket, tipo, empresa, area, solicitante, "
             + "medio, incidente, detalles, observacion, responsable, "
             + "estado, clasificacion, fechaSolicitud, horaSolicitud, "
             + "fechaAproximada, horaAproximada, fechaInicio, horaInicio, "
-            + "fechaFin, horaFin FROM TICKETS order by tipo like %?% limit 50";
-    final String ONE = "SELECT ticketkey, tipo, empresa, area, solicitante, "
+            + "fechaFin, horaFin FROM TICKETS order by tipo like ? limit 100";
+    final String ONE = "SELECT ticketkey, ticket, tipo, empresa, area, solicitante, "
             + "medio, incidente, detalles, observacion, responsable, "
             + "estado, clasificacion, fechaSolicitud, horaSolicitud, "
             + "fechaAproximada, horaAproximada, fechaInicio, horaInicio, "
-            + "fechaFin, horaFin FROM TICKETS ticketkey = ?";
-    final String UPDATE = "UPDATE TicketS SET tipo = ?, empresa = ?, area = ?, solicitante = ?, "
+            + "fechaFin, horaFin FROM TICKETS where ticket = ?";
+    final String UPDATE = "UPDATE TicketS SET  ticket = ?, tipo = ?, empresa = ?, area = ?, solicitante = ?, "
             + "medio = ?, incidente = ?, detalles = ?, observacion = ?, responsable = ?, "
             + "estado = ?, clasificacion = ?, fechaSolicitud = ?, horaSolicitud = ?, "
             + "fechaAproximada = ?, horaAproximada = ?, fechaInicio = ?, horaInicio = ?, "
@@ -62,25 +60,26 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
         PreparedStatement s = null;
         try {
             s = conex.prepareStatement(INSERT);
-            s.setString(1, a.getTipo());
-            s.setString(2, a.getEmpresa());
-            s.setString(3, a.getArea());
-            s.setString(4, a.getSolicitante());
-            s.setString(5, a.getMedio());
-            s.setString(6, a.getIncidente());
-            s.setString(7, a.getDetalles());
-            s.setString(8, a.getObservacion());
-            s.setString(9, a.getResponsable());
-            s.setString(10, a.getEstado());
-            s.setString(11, a.getClasificacion());
-            s.setDate(12, Date.valueOf(a.getFechaSolicitud()));
-            s.setTime(13, Time.valueOf(a.getHoraSolicitud()));
-            s.setDate(14, Date.valueOf(a.getFechaAproximada()));
-            s.setTime(15, Time.valueOf(a.getHoraAproximada()));
-            s.setDate(16, Date.valueOf(a.getFechaInicio()));
-            s.setTime(17, Time.valueOf(a.getHoraInicio()));
-            s.setDate(18, Date.valueOf(a.getFechaFin()));
-            s.setTime(19, Time.valueOf(a.getHoraFin()));
+            s.setString(1, a.getTicket());
+            s.setString(2, a.getTipo());
+            s.setString(3, a.getEmpresa());
+            s.setString(4, a.getArea());
+            s.setString(5, a.getSolicitante());
+            s.setString(6, a.getMedio());
+            s.setString(7, a.getIncidente());
+            s.setString(8, a.getDetalles());
+            s.setString(9, a.getObservacion());
+            s.setString(10, a.getResponsable());
+            s.setString(11, a.getEstado());
+            s.setString(12, a.getClasificacion());
+            s.setDate(13, Date.valueOf(a.getFechaSolicitud()));
+            s.setTime(14, Time.valueOf(a.getHoraSolicitud()));
+            s.setDate(15, Date.valueOf(a.getFechaAproximada()));
+            s.setTime(16, Time.valueOf(a.getHoraAproximada()));
+            s.setDate(17, Date.valueOf(a.getFechaInicio()));
+            s.setTime(18, Time.valueOf(a.getHoraInicio()));
+            s.setDate(19, Date.valueOf(a.getFechaFin()));
+            s.setTime(20, Time.valueOf(a.getHoraFin()));
             if (s.executeUpdate() == 0) {
                 throw new SQLException("Error al insertar Ticket");
             }
@@ -103,25 +102,26 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
         try {
             s = conex.prepareStatement(UPDATE);
             s.setString(1, a.getTipo());
-            s.setString(2, a.getEmpresa());
-            s.setString(3, a.getArea());
-            s.setString(4, a.getSolicitante());
-            s.setString(5, a.getMedio());
-            s.setString(6, a.getIncidente());
-            s.setString(7, a.getDetalles());
-            s.setString(8, a.getObservacion());
-            s.setString(9, a.getResponsable());
-            s.setString(10, a.getEstado());
-            s.setString(11, a.getClasificacion());
-            s.setDate(12, Date.valueOf(a.getFechaSolicitud()));
-            s.setTime(13, Time.valueOf(a.getHoraSolicitud()));
-            s.setDate(14, Date.valueOf(a.getFechaAproximada()));
-            s.setTime(15, Time.valueOf(a.getHoraAproximada()));
-            s.setDate(16, Date.valueOf(a.getFechaInicio()));
-            s.setTime(17, Time.valueOf(a.getHoraInicio()));
-            s.setDate(18, Date.valueOf(a.getFechaFin()));
-            s.setTime(19, Time.valueOf(a.getHoraFin()));
-            s.setInt(20, a.getTicketkey());
+            s.setString(2, a.getTipo());
+            s.setString(3, a.getEmpresa());
+            s.setString(4, a.getArea());
+            s.setString(5, a.getSolicitante());
+            s.setString(6, a.getMedio());
+            s.setString(7, a.getIncidente());
+            s.setString(8, a.getDetalles());
+            s.setString(9, a.getObservacion());
+            s.setString(10, a.getResponsable());
+            s.setString(11, a.getEstado());
+            s.setString(12, a.getClasificacion());
+            s.setDate(13, Date.valueOf(a.getFechaSolicitud()));
+            s.setTime(14, Time.valueOf(a.getHoraSolicitud()));
+            s.setDate(15, Date.valueOf(a.getFechaAproximada()));
+            s.setTime(16, Time.valueOf(a.getHoraAproximada()));
+            s.setDate(17, Date.valueOf(a.getFechaInicio()));
+            s.setTime(18, Time.valueOf(a.getHoraInicio()));
+            s.setDate(19, Date.valueOf(a.getFechaFin()));
+            s.setTime(20, Time.valueOf(a.getHoraFin()));
+            s.setInt(21, a.getTicketkey());
             if (s.executeUpdate() == 0) {
                 throw new SQLException("Error al insertar Ticket");
             }
@@ -163,17 +163,21 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
 
     @Override
     public Ticket select(Integer dato) throws DAOException {
+        throw new DAOException("Metodo select entero");
+    }
+
+    public Ticket select(String dato) throws DAOException {
         PreparedStatement s = null;
         ResultSet rs = null;
         Ticket c = null;
         try {
             s = conex.prepareStatement(ONE);
-            s.setInt(1, dato);
+            s.setString(1, dato);
             rs = s.executeQuery();
             if (rs.next()) {
                 c = convertir(rs);
             } else {
-                throw new SQLException("Cliente no encontrado");
+                throw new DAOException("Ticket no encontrado");
             }
         } catch (SQLException ex) {
             throw new DAOException(ex);
@@ -235,7 +239,7 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
         ObservableList<Ticket> l = FXCollections.observableArrayList();
         try {
             s = conex.prepareStatement(LIKE);
-            s.setString(1, dato.toLowerCase());
+            s.setString(1, "%" + dato.toUpperCase() + "%");
             rs = s.executeQuery();
             while (rs.next()) {
                 l.add(convertir(rs));
@@ -265,6 +269,7 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
     public Ticket convertir(ResultSet rs) throws DAOException {
         try {
             Ticket a = new Ticket();
+            a.setTicket(rs.getString("ticket"));
             a.setTipo(rs.getString("tipo"));
             a.setEmpresa(rs.getString("empresa"));
             a.setArea(rs.getString("area"));

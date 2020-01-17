@@ -19,6 +19,7 @@ public class Ticket {
      * Clave primaria
      */
     private int ticketkey;
+    private String ticket;
     private String tipo;
     private String empresa;
     private String area;
@@ -198,6 +199,22 @@ public class Ticket {
     public void setHoraSolicitud(LocalTime horaSolicitud) {
         this.horaSolicitud = horaSolicitud;
     }
-    
 
+    public String getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
+    }
+    
+    public boolean isEmpty(){
+        return getTicket().isEmpty()
+                ||getTipo().isEmpty()
+                ||getArea().isEmpty()
+                ||getEmpresa().isEmpty()
+                ||getEstado().isEmpty()
+                ||getMedio().isEmpty()
+                ||getHoraSolicitud()==null;
+    }
 }

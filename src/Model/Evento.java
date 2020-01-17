@@ -11,8 +11,8 @@ import java.time.LocalTime;
 /**
  * Esta clase gestiona los eventos de las acciones que se pueden realizar en
  * esta app. Estos eventos funcionan para realizar estadisticas tales como:
- * -Tickets aplazados -Tickets terminados -Tickets eliminados -Usuarios creados
- * -Usuarios
+ -Ticket aplazados -Ticket terminados -Ticket eliminados -Usuarios creados
+ -Usuarios
  *
  * @author Victorguz
  */

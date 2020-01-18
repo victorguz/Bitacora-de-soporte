@@ -22,7 +22,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.util.converter.LocalDateStringConverter;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -108,6 +107,12 @@ public class TicketsController extends Controller implements Initializable {
     @FXML
     private TextField textFechaRespuesta;
 
+    @FXML
+    private TextArea textObservacion;
+
+    @FXML
+    private TextArea textTicketRespuesta;
+
     ObservableList<Ticket> tickets = FXCollections.observableArrayList();
 
     ObservableList<String> solicitantes = FXCollections.observableArrayList();
@@ -148,10 +153,6 @@ public class TicketsController extends Controller implements Initializable {
         horaSolicitud.setTime(LocalTime.now());
         fechaRespuesta.setValue(LocalDate.now());
         horaRespuesta.setTime(LocalTime.now());
-        fechaInicio.setValue(LocalDate.now());
-        horaInicio.setTime(LocalTime.now());
-        fechaFin.setValue(LocalDate.now());
-        horaFin.setTime(LocalTime.now());
         setFechaFin();
         setFechaInicio();
         setFechaSolicitud();
@@ -348,7 +349,11 @@ public class TicketsController extends Controller implements Initializable {
         if (a.isEmpty()) {
             mensaje("A este ticket le faltan datos", "Error");
         } else {
-
+            try {
+                getTickets().insert(a);
+            } catch (DAOException ex) {
+                excepcion(ex);
+            }
         }
     }
 
@@ -379,6 +384,7 @@ public class TicketsController extends Controller implements Initializable {
         a.setHoraInicio(fechaInicio.getTime());
         a.setFechaFin(fechaFin.getValue());
         a.setHoraFin(fechaFin.getTime());
+        a.setObservacion(textObservacion.getText());
         return a;
     }
 
@@ -409,20 +415,40 @@ public class TicketsController extends Controller implements Initializable {
         }
     }
 
+    public void disableSolicitud() {
+        if (checkSolicitud.isSelected()) {
+            fechaSolicitud.setDisable(true);
+            horaSolicitud.setDisable(true);
+        } else {
+            fechaSolicitud.setDisable(false);
+            horaSolicitud.setDisable(false);
+        }
+    }
+
+    public void disableRespuesta() {
+        if (checkRespuesta.isSelected()) {
+            fechaRespuesta.setDisable(true);
+            horaRespuesta.setDisable(true);
+        } else {
+            fechaRespuesta.setDisable(false);
+            horaRespuesta.setDisable(false);
+        }
+    }
+
     public void setFechaSolicitud() {
-        textFechaSolicitud.setText(fechaSolicitud.getValue() + " " + horaSolicitud.getTime().toString().substring(0, 5));
+        textFechaSolicitud.setText(fechaSolicitud.getValue() + " " + ((horaSolicitud.getTime() == null) ? null : horaSolicitud.getTime().toString().substring(0, 5)));
     }
 
     public void setFechaRespuesta() {
-        textFechaRespuesta.setText(fechaRespuesta.getValue() + " " + horaRespuesta.getTime().toString().substring(0, 5));
+        textFechaRespuesta.setText(fechaRespuesta.getValue() + " " + ((horaRespuesta.getTime() == null) ? null : horaRespuesta.getTime().toString().substring(0, 5)));
     }
 
     public void setFechaInicio() {
-        textFechaInicio.setText(fechaInicio.getValue() + " " + horaInicio.getTime().toString().substring(0, 5));
+        textFechaInicio.setText(fechaInicio.getValue() + " " + ((horaInicio.getTime() == null) ? null : horaInicio.getTime().toString().substring(0, 5)));
     }
 
     public void setFechaFin() {
-        textFechaFin.setText(fechaFin.getValue() + " " + horaFin.getTime().toString().substring(0, 5));
+        textFechaFin.setText(fechaFin.getValue() + " " + ((horaFin.getTime() == null) ? null : horaFin.getTime().toString().substring(0, 5)));
     }
 
     public void updated() {
@@ -435,12 +461,12 @@ public class TicketsController extends Controller implements Initializable {
                         //TODO HERE
                         if (checkRespuesta.isSelected()) {
                             fechaRespuesta.setValue(LocalDate.now());
-                            fechaRespuesta.setTime(LocalTime.now());
+                            horaRespuesta.setTime(LocalTime.now());
                             setFechaRespuesta();
                         }
                         if (checkSolicitud.isSelected()) {
                             fechaSolicitud.setValue(LocalDate.now());
-                            fechaSolicitud.setTime(LocalTime.now());
+                            horaSolicitud.setTime(LocalTime.now());
                             setFechaSolicitud();
                         }
 

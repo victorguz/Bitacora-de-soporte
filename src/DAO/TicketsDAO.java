@@ -204,12 +204,12 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
     public ObservableList<Ticket> all() throws DAOException {
         PreparedStatement s = null;
         ResultSet rs = null;
-        ObservableList<Ticket> clientes = FXCollections.observableArrayList();
+        ObservableList<Ticket> tickets = FXCollections.observableArrayList();
         try {
             s = conex.prepareStatement(ALL);
             rs = s.executeQuery();
             while (rs.next()) {
-                clientes.add(convertir(rs));
+                tickets.add(convertir(rs));
             }
         } catch (SQLException ex) {
             throw new DAOException(ex);
@@ -229,7 +229,7 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
                 }
             }
         }
-        return clientes;
+        return tickets;
     }
 
     @Override
@@ -264,7 +264,7 @@ public class TicketsDAO implements CRUD<Ticket, Integer> {
         }
         return l;
     }
-
+    
     @Override
     public Ticket convertir(ResultSet rs) throws DAOException {
         try {
